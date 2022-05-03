@@ -1,0 +1,23 @@
+style:
+  NewLineAtEndOfFile:
+    active: false
+
+
+complexity:
+  LongParameterList:
+    functionThreshold: 12
+    constructorThreshold: 12
+    ignoreDefaultParameters: true
+
+
+formatting:
+  FinalNewline:
+    active: false
+  Indentation:
+    active: false
+  ImportOrdering:
+    active: false
+
+performance:
+  SpreadOperator:
+    active: false
