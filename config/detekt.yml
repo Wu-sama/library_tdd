@@ -1,6 +1,8 @@
 style:
   NewLineAtEndOfFile:
     active: false
+  UnusedPrivateMember:
+    active: false
 
 
 complexity:
