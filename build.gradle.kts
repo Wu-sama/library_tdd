@@ -1,7 +1,7 @@
 plugins {
 	id("org.springframework.boot")
 	id("io.spring.dependency-management")
-	kotlin("jvm")
+	kotlin("jvm") version "1.6.21"
 	java
 	kotlin("plugin.spring")
 	id("io.gitlab.arturbosch.detekt")
@@ -18,6 +18,11 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
 	implementation("org.hibernate.validator:hibernate-validator:7.0.4.Final")
+
+	//swagger
+	implementation("org.springdoc:springdoc-openapi-data-rest:1.6.0")
+	implementation("org.springdoc:springdoc-openapi-ui:1.6.0")
+	implementation("org.springdoc:springdoc-openapi-kotlin:1.6.0")
 
 	testImplementation("org.junit.jupiter:junit-jupiter-api")
 	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")

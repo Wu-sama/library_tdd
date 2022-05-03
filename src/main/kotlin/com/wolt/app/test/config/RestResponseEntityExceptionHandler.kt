@@ -7,15 +7,14 @@ import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
-import java.time.DateTimeException
 
 @ControllerAdvice
 class RestResponseEntityExceptionHandler : ResponseEntityExceptionHandler() {
-    @ExceptionHandler(value = [IllegalArgumentException::class, DateTimeException::class])
+    @ExceptionHandler(value = [Exception::class])
     fun handleConflict(
         ex: RuntimeException?, request: WebRequest?
     ): ResponseEntity<Any> {
-        val bodyOfResponse = "An error occurs: "
+        val bodyOfResponse = "An error occurs: ${ex?.message ?: "Unknown error."}"
         return handleExceptionInternal(ex, bodyOfResponse, HttpHeaders(), HttpStatus.BAD_REQUEST, request)
     }
 }
