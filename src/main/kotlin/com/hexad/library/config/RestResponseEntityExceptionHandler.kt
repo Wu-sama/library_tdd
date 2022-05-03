@@ -1,4 +1,4 @@
-package com.wolt.app.test.config
+package com.hexad.library.config
 
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus

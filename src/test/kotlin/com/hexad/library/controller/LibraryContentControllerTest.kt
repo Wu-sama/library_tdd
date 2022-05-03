@@ -1,8 +1,8 @@
-package com.wolt.app.test.controller
+package com.hexad.library.controller
 
 import com.ninjasquad.springmockk.MockkBean
-import com.wolt.app.test.model.dto.LibraryContentDto
-import com.wolt.app.test.service.LibraryContentService
+import com.hexad.library.model.dto.LibraryContentDto
+import com.hexad.library.service.LibraryContentService
 import io.mockk.every
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test

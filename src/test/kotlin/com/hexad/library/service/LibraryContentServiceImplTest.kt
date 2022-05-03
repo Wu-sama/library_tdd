@@ -1,12 +1,19 @@
-package com.wolt.app.test.service
+package com.hexad.library.service
 
-import com.wolt.app.test.model.dto.LibraryContentDto
+import com.hexad.library.model.Library
+import com.hexad.library.model.dto.LibraryContentDto
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 
 internal class LibraryContentServiceImplTest {
     private val libraryContentService: LibraryContentService = LibraryContentServiceImpl()
+
+    @BeforeEach
+    private fun clearContext(){
+        Library.clear()
+    }
 
     @Test
     fun putBooksIntoLibrary() {

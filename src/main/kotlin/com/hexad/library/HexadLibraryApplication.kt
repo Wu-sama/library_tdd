@@ -1,4 +1,4 @@
-package com.wolt.app.test
+package com.hexad.library
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

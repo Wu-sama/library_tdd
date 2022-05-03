@@ -1,7 +1,7 @@
-package com.wolt.app.test.controller
+package com.hexad.library.controller
 
-import com.wolt.app.test.model.dto.LibraryContentDto
-import com.wolt.app.test.service.LibraryContentService
+import com.hexad.library.model.dto.LibraryContentDto
+import com.hexad.library.service.LibraryContentService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
