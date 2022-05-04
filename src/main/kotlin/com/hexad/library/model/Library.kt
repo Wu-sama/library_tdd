@@ -1,9 +1,11 @@
 package com.hexad.library.model
 
 import com.hexad.library.exeption.BookNotFoundException
-import com.hexad.library.exeption.NotEnoughBookInTheLibraryException
+import com.hexad.library.exeption.NotEnoughBookCopiesException
 
 object Library {
+    private val STORE_NAME="the library"
+
     private var books: Map<String, Int> = mutableMapOf()
 
     fun addBooks(books: Map<String, Int>) {
@@ -22,19 +24,19 @@ object Library {
         return books.filter { it -> it.value > 0 }
     }
 
-    fun clear() {
+    fun clean() {
         this.books = mutableMapOf()
     }
 
     fun checkIfBookCanBeBorrowed(name: String) {
         if (!canBookBeBorrowed(name)) {
-            throw NotEnoughBookInTheLibraryException(name)
+            throw NotEnoughBookCopiesException(name, STORE_NAME)
         }
     }
 
     private fun canBookBeBorrowed(name: String): Boolean {
         if (!books.containsKey(name)) {
-            throw BookNotFoundException(name)
+            throw BookNotFoundException(name, STORE_NAME)
         }
         return books[name]!! > 0
     }

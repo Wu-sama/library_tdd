@@ -1,7 +1,7 @@
 package com.hexad.library.model
 
 import com.hexad.library.exeption.BookNotFoundException
-import com.hexad.library.exeption.NotEnoughBookInTheLibraryException
+import com.hexad.library.exeption.NotEnoughBookCopiesException
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -12,7 +12,7 @@ internal class LibraryTest {
 
     @BeforeEach
     fun cleanData(){
-        Library.clear()
+        Library.clean()
     }
 
     @Test
@@ -63,7 +63,7 @@ internal class LibraryTest {
         Library.addBooks(books = mutableMapOf("book1" to 0))
 
         assertThrows(
-            NotEnoughBookInTheLibraryException::class.java,
+            NotEnoughBookCopiesException::class.java,
             { Library.borrowBook("book1") },
             "Expected doThing() to throw, but it didn't"
         )

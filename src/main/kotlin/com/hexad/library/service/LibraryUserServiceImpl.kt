@@ -5,7 +5,7 @@ import com.hexad.library.model.UserAccount
 
 class LibraryUserServiceImpl: LibraryUserService {
     override fun borrowBook(name: String) {
-        UserAccount.checkIfBookCanBeAdded()
+        UserAccount.checkLimit()
         Library.checkIfBookCanBeBorrowed(name)
 
         Library.borrowBook(name)

@@ -1,8 +1,8 @@
 package com.hexad.library.exeption
 
-class BookNotFoundException(name: String) : RuntimeException(String.format(MSG, name)) {
+class BookNotFoundException(name: String, place: String) : RuntimeException(String.format(MSG, name, place)) {
     companion object {
-        private val MSG = "Book %s not found in library."
+        private val MSG = "Book %s not found %s."
     }
 
 }

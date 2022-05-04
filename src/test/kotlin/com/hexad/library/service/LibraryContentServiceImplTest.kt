@@ -12,7 +12,7 @@ internal class LibraryContentServiceImplTest {
 
     @BeforeEach
     private fun clearContext(){
-        Library.clear()
+        Library.clean()
     }
 
     @Test

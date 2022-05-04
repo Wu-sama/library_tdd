@@ -13,8 +13,8 @@ internal class LibraryUserServiceImplTest {
 
     @BeforeEach
     private fun clearContext(){
-        Library.clear()
-        UserAccount.clear()
+        Library.clean()
+        UserAccount.clean()
     }
 
     @Test

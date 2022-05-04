@@ -1,31 +1,52 @@
 package com.hexad.library.model
 
+import com.hexad.library.exeption.BookNotFoundException
 import com.hexad.library.exeption.LimitIsExceededException
+import com.hexad.library.exeption.NotEnoughBookCopiesException
 
 object UserAccount {
     private val account: MutableMap<String, Int> = mutableMapOf()
     private val BOOK_LIMIT = 2
+    private val STORE_NAME="user account"
 
     fun addBook(book: String) {
-        account.put(book, 1)
+        checkLimit()
+        if (account.containsKey(book)){
+            account[book] = account[book]!! + 1
+        } else {
+            account[book] = 1
+        }
     }
 
-    fun removeBook(book: String) {
-        account.remove(book)
-    }
-
-    fun getAllBooks(): Map<String, Int> {
-        return account
-    }
-
-    fun clear() {
-        account.clear()
-    }
-
-    fun checkIfBookCanBeAdded() {
-        if (canAddABook()) {
+    fun checkLimit() {
+        if (!canAddABook()){
             throw LimitIsExceededException()
         }
+    }
+
+    fun returnBook(book: String) {
+        if (account.containsKey(book)) {
+            returnBookToLibrary(book)
+        } else {
+            throw BookNotFoundException(book, STORE_NAME)
+        }
+    }
+
+    private fun returnBookToLibrary(book: String) {
+        val number: Int? = account[book]
+        if (number == null || number < 1) {
+            throw NotEnoughBookCopiesException(book, STORE_NAME)
+        } else if (number == 1) {
+            account.remove(book)
+        } else {
+            account[book] = number - 1
+        }
+    }
+
+    fun getAllBooks(): Map<String, Int> = account
+
+    fun clean() {
+        account.clear()
     }
 
     private fun canAddABook(): Boolean {
