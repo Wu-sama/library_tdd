@@ -13,6 +13,7 @@ class LibraryUserServiceImpl: LibraryUserService {
     }
 
     override fun returnBook(name: String) {
-        TODO("Not yet implemented")
+        UserAccount.returnBook(name)
+
     }
 }

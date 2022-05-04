@@ -25,10 +25,15 @@ object UserAccount {
     }
 
     fun returnBook(book: String) {
-        if (account.containsKey(book)) {
-            returnBookToLibrary(book)
-        } else {
+        checkIfBookIsPresent(book)
+        returnBookToLibrary(book)
+    }
+
+    fun checkIfBookIsPresent(book: String) {
+        if (!account.containsKey(book)) {
             throw BookNotFoundException(book, STORE_NAME)
+        } else if (account[book] == null || account[book]!! < 1) {
+            throw NotEnoughBookCopiesException(book, STORE_NAME)
         }
     }
 

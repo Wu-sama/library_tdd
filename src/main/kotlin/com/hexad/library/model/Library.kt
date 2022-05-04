@@ -4,7 +4,7 @@ import com.hexad.library.exeption.BookNotFoundException
 import com.hexad.library.exeption.NotEnoughBookCopiesException
 
 object Library {
-    private const val STORE_NAME="the library"
+    private const val STORE_NAME = "the library"
 
     private var books: MutableMap<String, Int> = mutableMapOf()
 
@@ -39,5 +39,17 @@ object Library {
             throw BookNotFoundException(name, STORE_NAME)
         }
         return books[name]!! > 0
+    }
+
+    fun checkIfBookIsFromLibrary(book: String) {
+        if (!books.containsKey(book)) {
+            throw BookNotFoundException(book, STORE_NAME)
+        }
+    }
+
+    fun returnBook(book: String) {
+        checkIfBookIsFromLibrary(book)
+        val number = books[book] ?: 0
+        books[book] = number + 1
     }
 }

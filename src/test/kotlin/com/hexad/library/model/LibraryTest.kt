@@ -11,7 +11,7 @@ import org.junit.jupiter.api.assertThrows
 internal class LibraryTest {
 
     @BeforeEach
-    fun cleanData(){
+    fun cleanData() {
         Library.clean()
     }
 
@@ -24,8 +24,8 @@ internal class LibraryTest {
     }
 
     @Test
-    fun addAnotherExampleOfBook(){
-        val addedBooks =  mapOf("book1" to 1)
+    fun addAnotherExampleOfBook() {
+        val addedBooks = mapOf("book1" to 1)
         Library.addBooks(books = mutableMapOf("book1" to 2))
 
         Library.addBooks(addedBooks)
@@ -35,7 +35,7 @@ internal class LibraryTest {
     }
 
     @Test
-    fun borrowBook(){
+    fun borrowBook() {
         Library.addBooks(books = mutableMapOf("book1" to 2))
 
         Library.borrowBook("book1")
@@ -45,7 +45,7 @@ internal class LibraryTest {
     }
 
     @Test
-    fun borrowBookNotFound(){
+    fun borrowBookNotFound() {
         Library.addBooks(books = mutableMapOf("book1" to 2))
 
         assertThrows<BookNotFoundException> { Library.borrowBook("book2") }
@@ -55,7 +55,7 @@ internal class LibraryTest {
     }
 
     @Test
-    fun borrowBookNotEnoughCopies(){
+    fun borrowBookNotEnoughCopies() {
         Library.addBooks(books = mutableMapOf("book1" to 0))
 
         assertThrows<NotEnoughBookCopiesException> { Library.borrowBook("book1") }
@@ -84,5 +84,33 @@ internal class LibraryTest {
         Library.addBooks(mutableMapOf(book to 0))
 
         assertThrows<NotEnoughBookCopiesException> { Library.checkIfBookCanBeBorrowed(book) }
+    }
+
+    @Test
+    fun returnCopyBook() {
+        val book = "book"
+        Library.addBooks(mutableMapOf(book to 1))
+
+        Library.returnBook(book)
+
+        assertEquals(2, Library.getBookList()[book])
+    }
+
+    @Test
+    fun returnBook() {
+        val book = "book"
+        Library.addBooks(mutableMapOf(book to 0))
+
+        Library.returnBook(book)
+
+        assertEquals(1, Library.getBookList()[book])
+    }
+
+    @Test
+    fun returnBookNotFromTheLibrary() {
+        val book = "book"
+        Library.addBooks(mutableMapOf(book to 0))
+
+        assertThrows<BookNotFoundException> { Library.returnBook(book + 2) }
     }
 }

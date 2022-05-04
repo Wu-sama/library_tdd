@@ -130,4 +130,11 @@ internal class UserAccountTest {
         UserAccount.addBook(book)
         UserAccount.checkLimit()
     }
+
+    @Test
+    fun bookIsNotPresent(){
+        val book = "book1"
+        UserAccount.addBook(book)
+        assertThrows<BookNotFoundException> { UserAccount.checkIfBookIsPresent(book+1) }
+    }
 }

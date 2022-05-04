@@ -1,11 +1,14 @@
 package com.hexad.library.service
 
+import com.hexad.library.exeption.BookNotFoundException
+import com.hexad.library.exeption.LimitIsExceededException
 import com.hexad.library.model.Library
 import com.hexad.library.model.UserAccount
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.assertThrows
 
 internal class LibraryUserServiceImplTest {
 
@@ -33,13 +36,9 @@ internal class LibraryUserServiceImplTest {
         Library.addBooks(mapOf("book1" to 1))
         UserAccount.addBook("book2")
         UserAccount.addBook("book2")
-        val exeption = assertThrows(
-            RuntimeException::class.java,
-            { libraryUserServiceImpl.borrowBook("book1") },
-            "Expected doThing() to throw, but it didn't"
-        )
-        assertNotNull(exeption.message)
-        assertTrue(exeption.message!!.contains("no more than 2."))
+        
+        assertThrows<LimitIsExceededException> { libraryUserServiceImpl.borrowBook("book1") }
+        
         assertNull(UserAccount.getAllBooks()["book1"])
         assertEquals(1, Library.getBookList()["book1"])
     }
@@ -47,13 +46,9 @@ internal class LibraryUserServiceImplTest {
     @Test
     fun borrowBookNotAddedInLibrary() {
         Library.addBooks(mapOf("book1" to 1))
-        val exeption = assertThrows(
-            RuntimeException::class.java,
-            { libraryUserServiceImpl.borrowBook("book2") },
-            "Expected doThing() to throw, but it didn't"
-        )
-        assertNotNull(exeption.message)
-        assertTrue(exeption.message!!.contains("not found in library."))
+        
+        assertThrows<BookNotFoundException> { libraryUserServiceImpl.borrowBook("book2") }
+        
         assertNull(UserAccount.getAllBooks()["book2"])
         assertNull(Library.getBookList()["book2"])
     }
@@ -90,14 +85,8 @@ internal class LibraryUserServiceImplTest {
         Library.addBooks(mapOf("book1" to 1))
         UserAccount.addBook("book3")
 
-        val exeption = assertThrows(
-            RuntimeException::class.java,
-            { libraryUserServiceImpl.returnBook("book3") },
-            "Expected doThing() to throw, but it didn't"
-        )
-
-        assertNotNull(exeption.message)
-        assertTrue(exeption.message!!.contains("not found in library."))
+        assertThrows<BookNotFoundException> { libraryUserServiceImpl.returnBook("book3") }
+        
         assertEquals(1, Library.getBookList().size)
         assertNull(Library.getBookList()["book1"])
     }
@@ -105,16 +94,9 @@ internal class LibraryUserServiceImplTest {
     @Test
     fun returnNotFoundBook() {
         Library.addBooks(mapOf("book1" to 1))
-        UserAccount.addBook("book1")
 
-        val exeption = assertThrows(
-            RuntimeException::class.java,
-            { libraryUserServiceImpl.returnBook("book3") },
-            "Expected doThing() to throw, but it didn't"
-        )
+        assertThrows<BookNotFoundException> { libraryUserServiceImpl.returnBook("book3") }
 
-        assertNotNull(exeption.message)
-        assertTrue(exeption.message!!.contains("not found in user account."))
         assertEquals(1, Library.getBookList().size)
         assertEquals(1, UserAccount.getAllBooks().size)
     }
