@@ -4,7 +4,7 @@ import com.hexad.library.exeption.BookNotFoundException
 import com.hexad.library.exeption.NotEnoughBookCopiesException
 
 object Library {
-    private val STORE_NAME="the library"
+    private const val STORE_NAME="the library"
 
     private var books: Map<String, Int> = mutableMapOf()
 

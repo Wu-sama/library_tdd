@@ -6,8 +6,8 @@ import com.hexad.library.exeption.NotEnoughBookCopiesException
 
 object UserAccount {
     private val account: MutableMap<String, Int> = mutableMapOf()
-    private val BOOK_LIMIT = 2
-    private val STORE_NAME="user account"
+    private const val BOOK_LIMIT = 2
+    private const val STORE_NAME="user account"
 
     fun addBook(book: String) {
         checkLimit()
