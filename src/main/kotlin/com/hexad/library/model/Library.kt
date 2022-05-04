@@ -6,18 +6,18 @@ import com.hexad.library.exeption.NotEnoughBookCopiesException
 object Library {
     private const val STORE_NAME="the library"
 
-    private var books: Map<String, Int> = mutableMapOf()
+    private var books: MutableMap<String, Int> = mutableMapOf()
 
     fun addBooks(books: Map<String, Int>) {
         Library.books = (Library.books.toList() + books.toList())
             .groupBy({ it.first }, { it.second })
             .map { (key, values) -> key to values.sum() }
-            .toMap()
+            .toMap(mutableMapOf())
     }
 
-    fun borrowBook(name: String) {
-        checkIfBookCanBeBorrowed(name)
-        books[name]!!.minus(1)
+    fun borrowBook(book: String) {
+        checkIfBookCanBeBorrowed(book)
+        books[book] = books[book]!! - 1
     }
 
     fun getBookList(): Map<String, Int> {

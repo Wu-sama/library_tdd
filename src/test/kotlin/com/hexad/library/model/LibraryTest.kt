@@ -5,8 +5,8 @@ import com.hexad.library.exeption.NotEnoughBookCopiesException
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.assertThrows
 
 internal class LibraryTest {
 
@@ -48,11 +48,7 @@ internal class LibraryTest {
     fun borrowBookNotFound(){
         Library.addBooks(books = mutableMapOf("book1" to 2))
 
-        assertThrows(
-            BookNotFoundException::class.java,
-            { Library.borrowBook("book2") },
-            "Expected doThing() to throw, but it didn't"
-        )
+        assertThrows<BookNotFoundException> { Library.borrowBook("book2") }
 
         assertEquals(1, Library.getBookList().size)
         assertEquals(2, Library.getBookList()["book1"])
@@ -62,12 +58,31 @@ internal class LibraryTest {
     fun borrowBookNotEnoughCopies(){
         Library.addBooks(books = mutableMapOf("book1" to 0))
 
-        assertThrows(
-            NotEnoughBookCopiesException::class.java,
-            { Library.borrowBook("book1") },
-            "Expected doThing() to throw, but it didn't"
-        )
+        assertThrows<NotEnoughBookCopiesException> { Library.borrowBook("book1") }
 
         assertEquals(0, Library.getBookList().size)
+    }
+
+    @Test
+    fun bookCanBeBorrowed() {
+        val book = "book1"
+        Library.addBooks(mutableMapOf(book to 1))
+        Library.checkIfBookCanBeBorrowed(book)
+    }
+
+    @Test
+    fun bookCanNotBeBorrowed() {
+        val book = "book1"
+        Library.addBooks(mutableMapOf(book to 1))
+
+        assertThrows<BookNotFoundException> { Library.checkIfBookCanBeBorrowed(book + 2) }
+    }
+
+    @Test
+    fun notEnoughBookForBorrowing() {
+        val book = "book1"
+        Library.addBooks(mutableMapOf(book to 0))
+
+        assertThrows<NotEnoughBookCopiesException> { Library.checkIfBookCanBeBorrowed(book) }
     }
 }
