@@ -13,7 +13,9 @@ class LibraryUserServiceImpl: LibraryUserService {
     }
 
     override fun returnBook(name: String) {
+        UserAccount.checkIfBookIsPresent(name)
+        Library.checkIfBookIsFromLibrary(name)
         UserAccount.returnBook(name)
-
+        Library.returnBook(name)
     }
 }

@@ -15,7 +15,7 @@ internal class LibraryUserServiceImplTest {
     private val libraryUserServiceImpl: LibraryUserService = LibraryUserServiceImpl()
 
     @BeforeEach
-    private fun clearContext(){
+    private fun clearContext() {
         Library.clean()
         UserAccount.clean()
     }
@@ -26,8 +26,8 @@ internal class LibraryUserServiceImplTest {
 
         libraryUserServiceImpl.borrowBook("book1")
 
-        assertEquals(1, Library.getBookList().size)
-        assertEquals(0, Library.getBookList()["book1"])
+        assertTrue(Library.getBookList().isEmpty())
+        assertNull(Library.getBookList()["book1"])
         assertEquals(1, UserAccount.getAllBooks()["book1"])
     }
 
@@ -36,9 +36,9 @@ internal class LibraryUserServiceImplTest {
         Library.addBooks(mapOf("book1" to 1))
         UserAccount.addBook("book2")
         UserAccount.addBook("book2")
-        
+
         assertThrows<LimitIsExceededException> { libraryUserServiceImpl.borrowBook("book1") }
-        
+
         assertNull(UserAccount.getAllBooks()["book1"])
         assertEquals(1, Library.getBookList()["book1"])
     }
@@ -46,9 +46,9 @@ internal class LibraryUserServiceImplTest {
     @Test
     fun borrowBookNotAddedInLibrary() {
         Library.addBooks(mapOf("book1" to 1))
-        
+
         assertThrows<BookNotFoundException> { libraryUserServiceImpl.borrowBook("book2") }
-        
+
         assertNull(UserAccount.getAllBooks()["book2"])
         assertNull(Library.getBookList()["book2"])
     }
@@ -86,9 +86,9 @@ internal class LibraryUserServiceImplTest {
         UserAccount.addBook("book3")
 
         assertThrows<BookNotFoundException> { libraryUserServiceImpl.returnBook("book3") }
-        
+
         assertEquals(1, Library.getBookList().size)
-        assertNull(Library.getBookList()["book1"])
+        assertNull(Library.getBookList()["book3"])
     }
 
     @Test
@@ -98,7 +98,7 @@ internal class LibraryUserServiceImplTest {
         assertThrows<BookNotFoundException> { libraryUserServiceImpl.returnBook("book3") }
 
         assertEquals(1, Library.getBookList().size)
-        assertEquals(1, UserAccount.getAllBooks().size)
+        assertTrue(UserAccount.getAllBooks().isEmpty())
     }
 
 }
