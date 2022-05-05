@@ -6,21 +6,21 @@ import com.hexad.library.exeption.NotEnoughBookCopiesException
 object Library {
     private const val STORE_NAME = "the library"
 
-    private var books: MutableMap<String, Int> = mutableMapOf()
+    private var books: MutableMap<Book, Int> = mutableMapOf()
 
-    fun addBooks(books: Map<String, Int>) {
+    fun addBooks(books: Map<Book, Int>) {
         Library.books = (Library.books.toList() + books.toList())
             .groupBy({ it.first }, { it.second })
             .map { (key, values) -> key to values.sum() }
             .toMap(mutableMapOf())
     }
 
-    fun borrowBook(book: String) {
+    fun borrowBook(book: Book) {
         checkIfBookCanBeBorrowed(book)
         books[book] = books[book]!! - 1
     }
 
-    fun getBookList(): Map<String, Int> {
+    fun getBookList(): Map<Book, Int> {
         return books.filter { it -> it.value > 0 }
     }
 
@@ -28,26 +28,26 @@ object Library {
         this.books = mutableMapOf()
     }
 
-    fun checkIfBookCanBeBorrowed(name: String) {
-        if (!canBookBeBorrowed(name)) {
-            throw NotEnoughBookCopiesException(name, STORE_NAME)
+    fun checkIfBookCanBeBorrowed(book: Book) {
+        if (!canBookBeBorrowed(book)) {
+            throw NotEnoughBookCopiesException(book, STORE_NAME)
         }
     }
 
-    private fun canBookBeBorrowed(name: String): Boolean {
-        if (!books.containsKey(name)) {
-            throw BookNotFoundException(name, STORE_NAME)
+    private fun canBookBeBorrowed(book: Book): Boolean {
+        if (!books.containsKey(book)) {
+            throw BookNotFoundException(book, STORE_NAME)
         }
-        return books[name]!! > 0
+        return books[book]!! > 0
     }
 
-    fun checkIfBookIsFromLibrary(book: String) {
+    fun checkIfBookIsFromLibrary(book: Book) {
         if (!books.containsKey(book)) {
             throw BookNotFoundException(book, STORE_NAME)
         }
     }
 
-    fun returnBook(book: String) {
+    fun returnBook(book: Book) {
         checkIfBookIsFromLibrary(book)
         val number = books[book] ?: 0
         books[book] = number + 1

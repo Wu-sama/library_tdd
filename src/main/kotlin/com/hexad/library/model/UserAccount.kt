@@ -5,11 +5,11 @@ import com.hexad.library.exeption.LimitIsExceededException
 import com.hexad.library.exeption.NotEnoughBookCopiesException
 
 object UserAccount {
-    private val account: MutableMap<String, Int> = mutableMapOf()
+    private val account: MutableMap<Book, Int> = mutableMapOf()
     private const val BOOK_LIMIT = 2
     private const val STORE_NAME="user account"
 
-    fun addBook(book: String) {
+    fun addBook(book: Book) {
         checkLimit()
         if (account.containsKey(book)){
             account[book] = account[book]!! + 1
@@ -24,12 +24,12 @@ object UserAccount {
         }
     }
 
-    fun returnBook(book: String) {
+    fun returnBook(book: Book) {
         checkIfBookIsPresent(book)
         returnBookToLibrary(book)
     }
 
-    fun checkIfBookIsPresent(book: String) {
+    fun checkIfBookIsPresent(book: Book) {
         if (!account.containsKey(book)) {
             throw BookNotFoundException(book, STORE_NAME)
         } else if (account[book] == null || account[book]!! < 1) {
@@ -37,7 +37,7 @@ object UserAccount {
         }
     }
 
-    private fun returnBookToLibrary(book: String) {
+    private fun returnBookToLibrary(book: Book) {
         val number: Int? = account[book]
         if (number == null || number < 1) {
             throw NotEnoughBookCopiesException(book, STORE_NAME)
@@ -48,7 +48,7 @@ object UserAccount {
         }
     }
 
-    fun getAllBooks(): Map<String, Int> = account
+    fun getAllBooks(): Map<Book, Int> = account
 
     fun clean() {
         account.clear()

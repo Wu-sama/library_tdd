@@ -2,8 +2,10 @@ package com.hexad.library.service
 
 import com.hexad.library.exeption.BookNotFoundException
 import com.hexad.library.exeption.LimitIsExceededException
+import com.hexad.library.model.Book
 import com.hexad.library.model.Library
 import com.hexad.library.model.UserAccount
+import com.hexad.library.model.dto.BookDto
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
@@ -22,80 +24,97 @@ internal class LibraryUserServiceImplTest {
 
     @Test
     fun borrowBook() {
-        Library.addBooks(mapOf("book1" to 1))
+        val book = Book(name = "book1", author = "author")
+        Library.addBooks(mapOf(book to 1))
 
-        libraryUserServiceImpl.borrowBook("book1")
+        libraryUserServiceImpl.borrowBook(book.toDto())
 
         assertTrue(Library.getBookList().isEmpty())
-        assertNull(Library.getBookList()["book1"])
-        assertEquals(1, UserAccount.getAllBooks()["book1"])
+        assertNull(Library.getBookList()[book])
+        assertEquals(1, UserAccount.getAllBooks()[book])
     }
 
     @Test
     fun borrowMoreThanTwoBook() {
-        Library.addBooks(mapOf("book1" to 1))
-        UserAccount.addBook("book2")
-        UserAccount.addBook("book2")
+        val book = Book(name = "book1", author = "author")
+        val book2 = Book(name = "book2", author = "author")
 
-        assertThrows<LimitIsExceededException> { libraryUserServiceImpl.borrowBook("book1") }
+        Library.addBooks(mapOf(book to 1))
+        UserAccount.addBook(book2)
+        UserAccount.addBook(book2)
 
-        assertNull(UserAccount.getAllBooks()["book1"])
-        assertEquals(1, Library.getBookList()["book1"])
+        assertThrows<LimitIsExceededException> { libraryUserServiceImpl.borrowBook(book.toDto()) }
+
+        assertNull(UserAccount.getAllBooks()[book])
+        assertEquals(1, Library.getBookList()[book])
     }
 
     @Test
     fun borrowBookNotAddedInLibrary() {
-        Library.addBooks(mapOf("book1" to 1))
+        val book = Book(name = "book1", author = "author")
+        val book2 = Book(name = "book2", author = "author")
 
-        assertThrows<BookNotFoundException> { libraryUserServiceImpl.borrowBook("book2") }
+        Library.addBooks(mapOf(book to 1))
 
-        assertNull(UserAccount.getAllBooks()["book2"])
-        assertNull(Library.getBookList()["book2"])
+        assertThrows<BookNotFoundException> { libraryUserServiceImpl.borrowBook(book2.toDto()) }
+
+        assertNull(UserAccount.getAllBooks()[book2])
+        assertNull(Library.getBookList()[book2])
     }
 
     @Test
     fun returnCopyOfBook() {
-        Library.addBooks(mapOf("book1" to 1))
-        UserAccount.addBook("book1")
+        val book = Book(name = "book1", author = "author")
 
-        libraryUserServiceImpl.returnBook("book1")
+        Library.addBooks(mapOf(book to 1))
+        UserAccount.addBook(book)
+
+        libraryUserServiceImpl.returnBook(book.toDto())
 
         assertEquals(1, Library.getBookList().size)
-        assertEquals(2, Library.getBookList()["book1"])
-        assertNull(UserAccount.getAllBooks()["book1"])
+        assertEquals(2, Library.getBookList()[book])
+        assertNull(UserAccount.getAllBooks()[book])
     }
 
     @Test
     fun returnBook() {
-        Library.addBooks(mapOf("book1" to 0))
-        Library.addBooks(mapOf("book2" to 1))
-        UserAccount.addBook("book1")
-        UserAccount.addBook("book2")
+        val book = Book(name = "book1", author = "author")
+        val book2 = Book(name = "book2", author = "author")
 
-        libraryUserServiceImpl.returnBook("book1")
+        Library.addBooks(mapOf(book to 0))
+        Library.addBooks(mapOf(book2 to 1))
+        UserAccount.addBook(book)
+        UserAccount.addBook(book2)
+
+        libraryUserServiceImpl.returnBook(book.toDto())
 
         assertEquals(2, Library.getBookList().size)
-        assertEquals(1, Library.getBookList()["book1"])
-        assertNull(UserAccount.getAllBooks()["book1"])
+        assertEquals(1, Library.getBookList()[book])
+        assertNull(UserAccount.getAllBooks()[book])
         assertEquals(1, UserAccount.getAllBooks().size)
     }
 
     @Test
     fun returnBookWhatHasNotGotFromLibrary() {
-        Library.addBooks(mapOf("book1" to 1))
-        UserAccount.addBook("book3")
+        val book = Book(name = "book1", author = "author")
+        val book3 = Book(name = "book3", author = "author3")
 
-        assertThrows<BookNotFoundException> { libraryUserServiceImpl.returnBook("book3") }
+        Library.addBooks(mapOf(book to 1))
+        UserAccount.addBook(book3)
+
+        assertThrows<BookNotFoundException> { libraryUserServiceImpl.returnBook(book3.toDto()) }
 
         assertEquals(1, Library.getBookList().size)
-        assertNull(Library.getBookList()["book3"])
+        assertNull(Library.getBookList()[book3])
     }
 
     @Test
     fun returnNotFoundBook() {
-        Library.addBooks(mapOf("book1" to 1))
+        val book = Book(name = "book1", author = "author")
+        val bookDto = BookDto(name = "book3", author = "author")
+        Library.addBooks(mapOf(book to 1))
 
-        assertThrows<BookNotFoundException> { libraryUserServiceImpl.returnBook("book3") }
+        assertThrows<BookNotFoundException> { libraryUserServiceImpl.returnBook(bookDto) }
 
         assertEquals(1, Library.getBookList().size)
         assertTrue(UserAccount.getAllBooks().isEmpty())

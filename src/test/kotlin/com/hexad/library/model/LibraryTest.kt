@@ -17,70 +17,75 @@ internal class LibraryTest {
 
     @Test
     fun addBook() {
-        Library.addBooks(mutableMapOf("book1" to 1))
+        val book = Book(name = "book1", author = "author")
+        Library.addBooks(mutableMapOf(book to 1))
 
         assertEquals(1, Library.getBookList().size)
-        assertEquals(1, Library.getBookList()["book1"])
+        assertEquals(1, Library.getBookList()[book])
     }
 
     @Test
     fun addAnotherExampleOfBook() {
-        val addedBooks = mapOf("book1" to 1)
-        Library.addBooks(books = mutableMapOf("book1" to 2))
+        val book = Book(name = "book1", author = "author")
+        val addedBooks = mapOf(book to 1)
+        Library.addBooks(books = mutableMapOf(book to 2))
 
         Library.addBooks(addedBooks)
 
         assertEquals(1, Library.getBookList().size)
-        assertEquals(3, Library.getBookList()["book1"])
+        assertEquals(3, Library.getBookList()[book])
     }
 
     @Test
     fun borrowBook() {
-        Library.addBooks(books = mutableMapOf("book1" to 2))
+        val book = Book(name = "book1", author = "author")
+        Library.addBooks(books = mutableMapOf(book to 2))
 
-        Library.borrowBook("book1")
+        Library.borrowBook(book)
 
         assertEquals(1, Library.getBookList().size)
-        assertEquals(1, Library.getBookList()["book1"])
+        assertEquals(1, Library.getBookList()[book])
     }
 
     @Test
     fun borrowBookNotFound() {
-        Library.addBooks(books = mutableMapOf("book1" to 2))
+        val book = Book(name = "book1", author = "author")
+        Library.addBooks(books = mutableMapOf(book to 2))
 
-        assertThrows<BookNotFoundException> { Library.borrowBook("book2") }
+        assertThrows<BookNotFoundException> { Library.borrowBook(book.copy(name = "book2")) }
 
         assertEquals(1, Library.getBookList().size)
-        assertEquals(2, Library.getBookList()["book1"])
+        assertEquals(2, Library.getBookList()[book])
     }
 
     @Test
     fun borrowBookNotEnoughCopies() {
-        Library.addBooks(books = mutableMapOf("book1" to 0))
+        val book = Book(name = "book1", author = "author")
+        Library.addBooks(books = mutableMapOf(book to 0))
 
-        assertThrows<NotEnoughBookCopiesException> { Library.borrowBook("book1") }
+        assertThrows<NotEnoughBookCopiesException> { Library.borrowBook(book) }
 
         assertEquals(0, Library.getBookList().size)
     }
 
     @Test
     fun bookCanBeBorrowed() {
-        val book = "book1"
+        val book = Book(name = "book1", author = "author")
         Library.addBooks(mutableMapOf(book to 1))
         Library.checkIfBookCanBeBorrowed(book)
     }
 
     @Test
     fun bookCanNotBeBorrowed() {
-        val book = "book1"
+        val book = Book(name = "book1", author = "author")
         Library.addBooks(mutableMapOf(book to 1))
 
-        assertThrows<BookNotFoundException> { Library.checkIfBookCanBeBorrowed(book + 2) }
+        assertThrows<BookNotFoundException> { Library.checkIfBookCanBeBorrowed(book.copy(name = "book2")) }
     }
 
     @Test
     fun notEnoughBookForBorrowing() {
-        val book = "book1"
+        val book = Book(name = "book1", author = "author")
         Library.addBooks(mutableMapOf(book to 0))
 
         assertThrows<NotEnoughBookCopiesException> { Library.checkIfBookCanBeBorrowed(book) }
@@ -88,7 +93,7 @@ internal class LibraryTest {
 
     @Test
     fun returnCopyBook() {
-        val book = "book"
+        val book = Book(name = "book1", author = "author")
         Library.addBooks(mutableMapOf(book to 1))
 
         Library.returnBook(book)
@@ -98,7 +103,7 @@ internal class LibraryTest {
 
     @Test
     fun returnBook() {
-        val book = "book"
+        val book = Book(name = "book1", author = "author")
         Library.addBooks(mutableMapOf(book to 0))
 
         Library.returnBook(book)
@@ -108,9 +113,9 @@ internal class LibraryTest {
 
     @Test
     fun returnBookNotFromTheLibrary() {
-        val book = "book"
+        val book = Book(name = "book1", author = "author")
         Library.addBooks(mutableMapOf(book to 0))
 
-        assertThrows<BookNotFoundException> { Library.returnBook(book + 2) }
+        assertThrows<BookNotFoundException> { Library.returnBook(book.copy(name = "book2")) }
     }
 }
