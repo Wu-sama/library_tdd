@@ -3,6 +3,7 @@ package com.hexad.library.service
 import com.hexad.library.model.Library
 import com.hexad.library.model.dto.BookDto
 import com.hexad.library.model.dto.LibraryContentDto
+import com.hexad.library.model.dto.RecordDto
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -18,18 +19,17 @@ internal class LibraryContentServiceImplTest {
 
     @Test
     fun putBooksIntoLibrary() {
-        val book = BookDto(name = "book1", author = "author")
-        val libraryContentDto = LibraryContentDto(books = mutableMapOf(book to 1))
-        val result = libraryContentService.putBooksIntoLibrary(libraryContentDto)
+        val result = libraryContentService.putBooksIntoLibrary(getLibraryContentDto())
         assertEquals(1, result.books.size)
     }
 
     @Test
     fun getBooks() {
-        val book = BookDto(name = "book1", author = "author")
-        val libraryContentDto = LibraryContentDto(books = mutableMapOf(book to 1))
-        libraryContentService.putBooksIntoLibrary(libraryContentDto)
+        libraryContentService.putBooksIntoLibrary(getLibraryContentDto())
         val result = libraryContentService.getBooks()
         assertEquals(1, result.books.size)
     }
+
+    private fun getLibraryContentDto() =
+        LibraryContentDto(listOf(RecordDto(bookDto = BookDto(name = "book1", author = "author"), 1)))
 }

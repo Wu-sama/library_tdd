@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.hexad.library.model.dto.BookDto
 import com.ninjasquad.springmockk.MockkBean
 import com.hexad.library.model.dto.LibraryContentDto
+import com.hexad.library.model.dto.RecordDto
 import com.hexad.library.service.LibraryContentService
 import io.mockk.every
 import org.junit.jupiter.api.Assertions
@@ -29,7 +30,8 @@ class LibraryContentControllerTest @Autowired constructor(
     @Test
     fun putBookIntoLibrarySuccess() {
         every { libraryContentServiceImpl.putBooksIntoLibrary(any()) } returns LibraryContentDto()
-        val request = LibraryContentDto(mutableMapOf(BookDto(name = "Name", author = "Author") to 1))
+        val request =
+            LibraryContentDto(listOf(RecordDto(bookDto = BookDto(name = "Name", author = "Author"), number = 1)))
         val result = this.mockMvc.perform(
             MockMvcRequestBuilders.put(URL)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -58,13 +60,14 @@ class LibraryContentControllerTest @Autowired constructor(
     @Test
     fun putBookIntoLibrary_EmptyBookName() {
         every { libraryContentServiceImpl.putBooksIntoLibrary(any()) } returns LibraryContentDto()
-        val request = LibraryContentDto(mutableMapOf(BookDto(name = "", author = "Author") to 1))
+        val request =
+            LibraryContentDto(listOf(RecordDto(bookDto = BookDto(name = "", author = "Author"), number = 1)))
         val result = this.mockMvc.perform(
             MockMvcRequestBuilders.put(URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
         )
-            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.status().isBadRequest)
             .andReturn()
         val body = result.response.contentAsString
         Assertions.assertNotNull(body)
@@ -73,14 +76,15 @@ class LibraryContentControllerTest @Autowired constructor(
     @Test
     fun putBookIntoLibrary_BookNumberIsZero() {
         every { libraryContentServiceImpl.putBooksIntoLibrary(any()) } returns LibraryContentDto()
-        val request = LibraryContentDto(mutableMapOf(BookDto(name = "", author = "Author") to 0))
+        val request =
+            LibraryContentDto(listOf(RecordDto(bookDto = BookDto(name = "Name", author = "Author"), number = -1)))
 
         val result = this.mockMvc.perform(
             MockMvcRequestBuilders.put(URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
         )
-            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.status().isBadRequest)
             .andReturn()
         val body = result.response.contentAsString
         Assertions.assertNotNull(body)

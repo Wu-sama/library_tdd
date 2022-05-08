@@ -22,15 +22,15 @@ class LibraryContentController(
 ) {
     @PutMapping(consumes= [MediaType.APPLICATION_JSON_VALUE])
     fun putBooksIntoLibrary(@RequestBody @Valid request: LibraryContentDto): ResponseEntity<LibraryContentDto> {
-        validateNumbersOfBook(request)
+//        validateNumbersOfBook(request)
         val result = libraryServiceImpl.putBooksIntoLibrary(request)
         return ResponseEntity<LibraryContentDto>(result, HttpStatus.OK)
     }
 
     private fun validateNumbersOfBook(request: LibraryContentDto) {
-        val negativeOrZeroAmount = request.books.filter { it.value < 1 }
+        val negativeOrZeroAmount = request.books.filter { it.number < 1 }
         if(negativeOrZeroAmount.isNotEmpty()){
-            throw NotEnoughBookCopiesException(negativeOrZeroAmount.keys, "for adding in the library")
+            throw NotEnoughBookCopiesException(negativeOrZeroAmount, "for adding in the library")
         }
     }
 

@@ -1,5 +1,8 @@
 package com.hexad.library.model.dto
 
+import javax.validation.constraints.NotNull
+
 data class LibraryContentDto(
-    val books: Map<BookDto, Int> = emptyMap()
+    @NotNull
+    val books: List<RecordDto> = emptyList()
 )

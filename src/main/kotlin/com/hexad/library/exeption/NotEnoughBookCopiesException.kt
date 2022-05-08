@@ -1,7 +1,7 @@
 package com.hexad.library.exeption
 
 import com.hexad.library.model.Book
-import com.hexad.library.model.dto.BookDto
+import com.hexad.library.model.dto.RecordDto
 
 class NotEnoughBookCopiesException(bookName: String, additionalInfo: String) :
     RuntimeException(String.format(MSG, bookName, additionalInfo)) {
@@ -9,7 +9,7 @@ class NotEnoughBookCopiesException(bookName: String, additionalInfo: String) :
         private const val MSG = "Not enough book %s copies %s."
     }
 
-    constructor(books: Set<BookDto>, additionalInfo: String) : this(
+    constructor(books: List<RecordDto>, additionalInfo: String) : this(
         bookName = books.toString(),
         additionalInfo = additionalInfo
     )
