@@ -1,7 +1,7 @@
 plugins {
 	id("org.springframework.boot")
 	id("io.spring.dependency-management")
-	kotlin("jvm") version "1.6.21"
+	kotlin("jvm")
 	java
 	kotlin("plugin.spring")
 	id("io.gitlab.arturbosch.detekt")

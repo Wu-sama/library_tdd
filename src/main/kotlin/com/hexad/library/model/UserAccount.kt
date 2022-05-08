@@ -40,7 +40,7 @@ object UserAccount {
     private fun returnBookToLibrary(book: Book) {
         val number: Int? = account[book]
         if (number == null || number < 1) {
-            throw NotEnoughBookCopiesException(book, STORE_NAME)
+            throw NotEnoughBookCopiesException(book = book, place = STORE_NAME)
         } else if (number == 1) {
             account.remove(book)
         } else {
