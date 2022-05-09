@@ -20,9 +20,9 @@ dependencies {
 	implementation("org.hibernate.validator:hibernate-validator:7.0.4.Final")
 
 	//swagger
-	implementation("org.springdoc:springdoc-openapi-data-rest:1.6.0")
-	implementation("org.springdoc:springdoc-openapi-ui:1.6.0")
-	implementation("org.springdoc:springdoc-openapi-kotlin:1.6.0")
+	implementation("org.springdoc:springdoc-openapi-data-rest:1.6.8")
+	implementation("org.springdoc:springdoc-openapi-ui:1.6.8")
+	implementation("org.springdoc:springdoc-openapi-kotlin:1.6.8")
 
 	testImplementation("org.junit.jupiter:junit-jupiter-api")
 	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")

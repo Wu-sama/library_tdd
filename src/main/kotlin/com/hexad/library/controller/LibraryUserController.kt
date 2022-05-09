@@ -22,11 +22,22 @@ class LibraryUserController(
 
     @PutMapping("/borrowing")
     fun borrowBook(@RequestBody bookDto: BookDto){
+        validateBook(bookDto)
         return libraryUserService.borrowBook(bookDto)
     }
 
     @PutMapping("/returning")
     fun returnBook(@RequestBody bookDto: BookDto){
+        validateBook(bookDto)
         return libraryUserService.returnBook(bookDto)
+    }
+
+    fun validateBook(bookDto: BookDto){
+        if (bookDto.name.isEmpty()){
+            throw IllegalArgumentException("Book name should not be empty")
+        }
+        if (bookDto.author.isEmpty()){
+            throw IllegalArgumentException("Book author should not be empty")
+        }
     }
 }
