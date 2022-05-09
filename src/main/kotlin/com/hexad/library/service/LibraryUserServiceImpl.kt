@@ -5,7 +5,9 @@ import com.hexad.library.model.Library
 import com.hexad.library.model.UserAccount
 import com.hexad.library.model.dto.BookDto
 import com.hexad.library.model.dto.RecordDto
+import org.springframework.stereotype.Service
 
+@Service
 class LibraryUserServiceImpl : LibraryUserService {
     override fun borrowBook(dto: BookDto) {
         val book = Book(dto)

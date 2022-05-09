@@ -97,7 +97,14 @@ class LibraryUserControllerTest @Autowired constructor(
 
     @Test
     fun getUserBooks() {
-        every { libraryUserService.getBooks() } returns listOf(RecordDto(bookDto = BookDto(name = "Name", author = "Author"), number = 1))
+        every { libraryUserService.getBooks() } returns listOf(
+            RecordDto(
+                bookDto = BookDto(
+                    name = "Name",
+                    author = "Author"
+                ), number = 1
+            )
+        )
         val result = this.mockMvc.perform(
             MockMvcRequestBuilders.get(URL)
         )
