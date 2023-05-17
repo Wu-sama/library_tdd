@@ -10,6 +10,6 @@ pluginManagement {
 }
 
 
-rootProject.name = "hexad_library_app"
+rootProject.name = "library_app"
 
 

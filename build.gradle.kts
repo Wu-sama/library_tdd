@@ -7,7 +7,7 @@ plugins {
 	id("io.gitlab.arturbosch.detekt")
 }
 
-group = "com.hexad.library"
+group = "com.library."
 version = "0.0.1-SNAPSHOT"
 
 repositories {
